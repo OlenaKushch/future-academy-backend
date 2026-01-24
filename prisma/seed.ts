@@ -18,235 +18,296 @@ async function main() {
       email: 'admin@test.com',
       password: hashedPassword,
       name: 'Test Admin',
+      avatar: 'https://ui-avatars.com/api/?name=Test+Admin&background=0D8ABC&color=fff',
     },
   });
 
-  const levels = ['Новичок', 'Пользователь', 'Профессионал', 'Читер'];
-  const types = ['Курс', 'Профессия'];
+  const levels = ['Новачок', 'Користувач', 'Профі', 'Читер'];
+  const types = ['Курс', 'Професія'];
 
-  // Дані твоїх курсів з усіма необхідними полями
+  // Дані курсів з усіма необхідними полями
   const coursesRaw = [
     // 8-14 років (Діти)
     {
       title: 'Minecraft: Програмування на Python',
-      desc: 'Вчимося будувати замки та автоматизувати світ кодом.',
+      description: 'Вчимося будувати замки та автоматизувати світ кодом.',
       price: 45,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800&q=80',
     },
     {
       title: 'Roblox Game Dev',
-      desc: 'Створи свою першу гру та запроси друзів пограти.',
+      description: 'Створи свою першу гру та запроси друзів пограти.',
       price: 50,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1605897482354-884591b93818?w=800&q=80',
     },
     {
       title: 'Юний YouTube Блогер',
-      desc: 'Зйомка, світло та монтаж відео на телефоні.',
+      description: 'Зйомка, світло та монтаж відео на телефоні.',
       price: 35,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80',
     },
     {
       title: 'Цифровий Арт у Procreate',
-      desc: 'Малювання персонажів аніме та коміксів на планшеті.',
+      description: 'Малювання персонажів аніме та коміксів на планшеті.',
       price: 40,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1561998338-13ad7883b10f?w=800&q=80',
     },
     {
       title: 'Майстерня Штучного Інтелекту',
-      desc: 'Малювання в Midjourney та казки з ChatGPT.',
+      description: 'Малювання в Midjourney та казки з ChatGPT.',
       price: 30,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
     },
     {
       title: 'Розробка мобільних додатків',
-      desc: 'Створення корисних програм для смартфона.',
+      description: 'Створення корисних програм для смартфона.',
       price: 55,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80',
     },
     {
       title: 'Основи Кібербезпеки',
-      desc: 'Захист акаунтів та безпечний інтернет.',
+      description: 'Захист акаунтів та безпечний інтернет.',
       price: 25,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80',
     },
     {
       title: 'Космічна 3D-моделювання',
-      desc: 'Моделі ракет та планет для 3D-друку.',
+      description: 'Моделі ракет та планет для 3D-друку.',
       price: 45,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800&q=80',
     },
     {
       title: 'Етичний Хакінг (Рівень 1)',
-      desc: 'Як працюють мережі та пошук помилок у програмах.',
+      description: 'Як працюють мережі та пошук помилок у програмах.',
       price: 60,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80',
     },
     {
       title: 'Створення власного веб-сайту',
-      desc: 'Стильні сторінки на HTML та CSS.',
+      description: 'Стильні сторінки на HTML та CSS.',
       price: 40,
       min: 8,
       max: 14,
+      image:
+        'https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80',
     },
 
     // 14-18 років (Підлітки)
     {
       title: 'Створення чат-ботів для Telegram',
-      desc: 'Бот, який відповідає на питання або шукає фільми.',
+      description: 'Бот, який відповідає на питання або шукає фільми.',
       price: 40,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1527430253228-e92688e15891?w=800&q=80',
     },
     {
       title: 'Монтаж відео для TikTok та Reels',
-      desc: 'Трендові переходи та ефекти як у профі.',
+      description: 'Трендові переходи та ефекти як у профі.',
       price: 35,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1536243298747-ea8874136d64?w=800&q=80',
     },
     {
       title: 'Запуск свого інтернет-магазину',
-      desc: 'Сайт для продажу мерчу або своїх товарів.',
+      description: 'Сайт для продажу мерчу або своїх товарів.',
       price: 50,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
     },
     {
       title: '3D-моделювання персонажів ігор',
-      desc: 'Ліпимо героїв у стилі Fortnite у Blender.',
+      description: 'Ліпимо героїв у стилі Fortnite у Blender.',
       price: 45,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1615110571065-b1e8a3902991?w=800&q=80',
     },
     {
       title: 'Магія Photoshop: від мемів до арту',
-      desc: 'Обробка фото та круті колажі.',
+      description: 'Обробка фото та круті колажі.',
       price: 30,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1572044162444-ad60f128bde7?w=800&q=80',
     },
     {
       title: 'Основи програмування на Python',
-      desc: 'Код, який вирішує домашку з математики.',
+      description: 'Код, який вирішує домашку з математики.',
       price: 45,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80',
     },
     {
       title: 'Дизайн одягу та принтів',
-      desc: 'Дизайн для футболок чи худі.',
+      description: 'Дизайн для футболок чи худі.',
       price: 40,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=80',
     },
     {
       title: 'Стрімінг на Twitch: від нуля до Pro',
-      desc: 'Налаштування OBS та залучення глядачів.',
+      description: 'Налаштування OBS та залучення глядачів.',
       price: 25,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80',
     },
     {
       title: 'Побудова комп’ютера своєї мрії',
-      desc: 'Збірка ПК: від деталей до запуску.',
+      description: 'Збірка ПК: від деталей до запуску.',
       price: 30,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=800&q=80',
     },
     {
       title: 'Цифровий маркетинг для соцмереж',
-      desc: 'Розкрутка бренду без великих бюджетів.',
+      description: 'Розкрутка бренду без великих бюджетів.',
       price: 40,
       min: 14,
       max: 18,
+      image:
+        'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80',
     },
 
-    // 18+ років (Дорослі)
+    // 18-99 років (Дорослі)
     {
       title: 'Створення сайтів на No-Code',
-      desc: 'Збірка сайтів на Tilda/Webflow без коду.',
+      description: 'Збірка сайтів на Tilda/Webflow без коду.',
       price: 60,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1581291518655-951832b0f4c8?w=800&q=80',
     },
     {
       title: 'SMM: Просування в Instagram',
-      desc: 'Бізнес-профілі, реклама та клієнти.',
+      description: 'Бізнес-профілі, реклама та клієнти.',
       price: 50,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&q=80',
     },
     {
       title: 'Копірайтинг та Нейромережі',
-      desc: 'Тексти для блогів за допомогою ChatGPT.',
+      description: 'Тексти для блогів за допомогою ChatGPT.',
       price: 45,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
     },
     {
       title: 'Візуальний дизайн у Canva/Figma',
-      desc: 'Презентації, лого та банери швидко і стильно.',
+      description: 'Презентації, лого та банери швидко і стильно.',
       price: 40,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?w=800&q=80',
     },
     {
       title: 'IT-рекрутинг: як шукати програмістів',
-      desc: 'Посередництво між IT-компаніями та фахівцями.',
+      description: 'Посередництво між IT-компаніями та фахівцями.',
       price: 70,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
     },
     {
       title: 'Вступ до криптосвіту',
-      desc: 'Біткоїн, гаманці та безпека в крипто.',
+      description: 'Біткоїн, гаманці та безпека в крипто.',
       price: 35,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800&q=80',
     },
     {
       title: 'Excel та Google Таблиці для бізнесу',
-      desc: 'Автоматизація підрахунків та графіки.',
+      description: 'Автоматизація підрахунків та графіки.',
       price: 30,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80',
     },
     {
       title: 'Основи фотографії на смартфон',
-      desc: 'Професійні кадри для особистого бренду.',
+      description: 'Професійні кадри для особистого бренду.',
       price: 40,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80',
     },
     {
       title: 'Психологія спілкування з клієнтами',
-      desc: 'Мистецтво переговорів про вищу ціну.',
+      description: 'Мистецтво переговорів про вищу ціну.',
       price: 45,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1552581234-26160f608093?w=800&q=80',
     },
     {
       title: 'Таргетована реклама (Facebook/Ads)',
-      desc: 'Запуск реклами, що приносить продажі.',
+      description: 'Запуск реклами, що приносить продажі.',
       price: 65,
       min: 18,
       max: 99,
+      image:
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
     },
   ];
 
-  // Перетворюємо в формат, який розуміє Prisma
   const coursesArray = coursesRaw.map(c => ({
     title: c.title,
-    description: c.desc,
+    description: c.description,
+    image: c.image,
     content: `<h3>Програма курсу: ${c.title}</h3><p>Детальний план навчання для вікової категорії ${c.min}-${c.max} років.</p><ul><li>Основи</li><li>Практика</li><li>Проект</li></ul>`,
     price: c.price,
     minAge: c.min,

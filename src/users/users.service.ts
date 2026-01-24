@@ -58,15 +58,27 @@ export class UsersService {
         id: true,
         email: true,
         name: true,
+        avatar: true,
         enrolledCourses: {
           select: {
             id: true,
             title: true,
             price: true,
+            image: true,
           },
+        },
+        _count: {
+          select: { enrolledCourses: true },
         },
       },
     });
+
+    if (!user) throw new NotFoundException('User was not found');
+
+    if (!user.avatar) {
+      const nameForAvatar = user.name ? user.name.split(' ').join('+') : 'User';
+      user.avatar = `https://ui-avatars.com/api/?name=${nameForAvatar}&background=random`;
+    }
 
     return user;
   }
