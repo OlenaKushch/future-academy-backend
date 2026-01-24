@@ -26,10 +26,15 @@ export class CoursesController {
 
   @Post(':id/enroll')
   @UseGuards(AuthGuard('jwt'))
-  async enroll(
+  async enrollUser(
     @Param('id', ParseIntPipe) courseId: number,
     @GetUser() user: ActiveUserData,
   ) {
-    return this.coursesService.enroll(courseId, user.userId);
+    return this.coursesService.enrollUser(courseId, user.userId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.coursesService.findOne(+id);
   }
 }

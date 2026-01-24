@@ -37,7 +37,7 @@ npm install
 3. **Налаштуйте середовище:**
 Створіть файл `.env` у корені проєкту та додайте посилання на вашу базу даних:
 ```env
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/future_academy?schema=public"
+DATABASE_URL="your_database_url"
 JWT_SECRET="your_very_secret_key"
 
 ```
@@ -64,8 +64,6 @@ npx prisma migrate reset
 npm run start:dev
 
 ```
-
-
 
 ## 📡 Основні API Ендпоінти
 

@@ -25,10 +25,18 @@ model User {
 
 model Course {
   id          Int      @id @default(autoincrement())
-  title       String @unique
-  description String?
-  price       Float    @default(0)
-  createdAt   DateTime @default(now())
+  title       String
+  description String   
+  content     String?  
+  image       String?
+  price       Float
+  
+  minAge      Int      @default(8)
+  maxAge      Int      @default(99)
+  level       String   @default("Новачок")   
+  type        String   @default("Курс")       
+  duration    Int      @default(1)            
 
-  students User[] @relation("UserEnrolledCourses")
+
+  enrolledUsers User[]  @relation("UserEnrolledCourses")
 }

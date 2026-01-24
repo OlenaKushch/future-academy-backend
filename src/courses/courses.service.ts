@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 type CourseWithStudentsCount = Prisma.CourseGetPayload<{
   include: {
     _count: {
-      select: { students: true };
+      select: { enrolledUsers: true };
     };
   };
 }>;
@@ -19,14 +19,14 @@ export class CoursesService {
       include: {
         _count: {
           select: {
-            students: true,
+            enrolledUsers: true,
           },
         },
       },
     });
   }
 
-  async enroll(courseId: number, userId: number): Promise<User> {
+  async enrollUser(courseId: number, userId: number): Promise<User> {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
     });
@@ -43,8 +43,25 @@ export class CoursesService {
         },
       },
       include: {
-        enrolledCourses: true,
+        _count: {
+          select: { enrolledCourses: true },
+        },
       },
     });
+  }
+
+  async findOne(id: number) {
+    const course = await this.prisma.course.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: { enrolledUsers: true },
+        },
+      },
+    });
+    if (!course) {
+      throw new NotFoundException(`Курс ${id} не знайдено`);
+    }
+    return course;
   }
 }
