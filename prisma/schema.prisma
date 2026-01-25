@@ -21,23 +21,42 @@ model User {
   avatar    String?
   createdAt DateTime @default(now())
 
-  enrolledCourses Course[] @relation("UserEnrolledCourses")
+  enrolledCourses Course[]            @relation("UserEnrolledCourses")
+  applications    CourseApplication[]
 }
 
 model Course {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   title       String
-  description String   
-  content     String?  
+  description String
+  content     String?
   image       String?
   price       Float
-  
-  minAge      Int      @default(8)
-  maxAge      Int      @default(99)
-  level       String   @default("Новачок")   
-  type        String   @default("Курс")       
-  duration    Int      @default(1)            
 
+  minAge   Int    @default(8)
+  maxAge   Int    @default(99)
+  level    String @default("Новачок")
+  type     String @default("Курс")
+  duration Int    @default(1)
 
-  enrolledUsers User[]  @relation("UserEnrolledCourses")
+  enrolledUsers User[]              @relation("UserEnrolledCourses")
+  applications  CourseApplication[]
+}
+
+model CourseApplication {
+  id       Int     @id @default(autoincrement())
+  userName String
+  phone    String
+  comment  String?
+
+  status String @default("PENDING")
+
+  userId   Int?
+  user     User?  @relation(fields: [userId], references: [id])
+
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

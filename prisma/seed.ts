@@ -18,7 +18,8 @@ async function main() {
       email: 'admin@test.com',
       password: hashedPassword,
       name: 'Test Admin',
-      avatar: 'https://ui-avatars.com/api/?name=Test+Admin&background=0D8ABC&color=fff',
+      avatar:
+        'https://ui-avatars.com/api/?name=Test+Admin&background=0D8ABC&color=fff',
     },
   });
 
