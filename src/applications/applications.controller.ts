@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Req } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
-import { CreateApplicationDto } from 'src/dto/create-application.dto';
+import { CreateApplicationDto } from '../dto/create-application.dto';
 
 interface RequestWithUser extends Request {
   user?: {
