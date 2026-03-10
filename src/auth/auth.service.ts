@@ -3,7 +3,6 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common/exceptions';
-import { CreateUserDto } from '../dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,16 +10,6 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  async register(createUserDto: CreateUserDto) {
-    const user = await this.usersService.create(createUserDto);
-
-    const payload = { userId: user.id, email: user.email };
-    return {
-      user,
-      access_token: await this.jwtService.signAsync(payload),
-    };
-  }
 
   async signIn(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);

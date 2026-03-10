@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import slugify from 'slugify';
 
 const prisma = new PrismaClient();
 
@@ -307,9 +308,19 @@ async function main() {
 
   const coursesArray = coursesRaw.map(c => ({
     title: c.title,
+    slug:
+      slugify(c.title, { lower: true, strict: true }) +
+      '-' +
+      Math.floor(Math.random() * 10000),
     description: c.description,
     image: c.image,
-    content: `<h3>Програма курсу: ${c.title}</h3><p>Детальний план навчання для вікової категорії ${c.min}-${c.max} років.</p><ul><li>Основи</li><li>Практика</li><li>Проект</li></ul>`,
+    content: `<h3>Програма курсу: ${c.title}</h3>
+            <p>Детальний план навчання для вікової категорії ${c.min}-${c.max} років.</p>
+            <ul>
+              <li>Основи</li>
+              <li>Практика</li>
+              <li>Проект</li>
+            </ul>`,
     price: c.price,
     minAge: c.min,
     maxAge: c.max,
@@ -319,13 +330,14 @@ async function main() {
   }));
 
   console.log('Додавання курсів у базу...');
+
   await prisma.course.createMany({
     data: coursesArray,
+    skipDuplicates: true,
   });
 
   console.log('✅ Базу успішно наповнено! 30 курсів готові.');
 }
-
 main()
   .catch(e => {
     console.error(e);

@@ -20,6 +20,8 @@ model User {
   name      String
   password  String
   avatar    String?
+
+  role      UserRole  @default(ADMIN)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   enrolledCourses Course[]            @relation("UserEnrolledCourses")
@@ -29,10 +31,12 @@ model User {
 model Course {
   id          Int     @id @default(autoincrement())
   title       String
+  slug        String @unique
   description String
   content     String?
   image       String?
   price       Float
+  isActive    Boolean @default(true)
 
   minAge   Int    @default(8)
   maxAge   Int    @default(99)
@@ -63,4 +67,16 @@ model CourseApplication {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum ApplicationStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  CLOSED
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
 }
