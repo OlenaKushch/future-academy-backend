@@ -22,7 +22,7 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Wrong email or password');
     }
-    const payload = { id: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

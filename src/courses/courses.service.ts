@@ -1,53 +1,46 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-
-type CourseWithStudentsCount = Prisma.CourseGetPayload<{
-  include: {
-    _count: {
-      select: { enrolledUsers: true };
-    };
-  };
-}>;
+import { GetCoursesQueryDto } from '../dto/get-courses-query.dto';
 
 @Injectable()
 export class CoursesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll(): Promise<CourseWithStudentsCount[]> {
-    return this.prisma.course.findMany({
-      include: {
-        _count: {
-          select: {
-            enrolledUsers: true,
+  async findAll(query: GetCoursesQueryDto) {
+    const { page, limit, search } = query;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.CourseWhereInput = search
+      ? {
+          OR: [
+            { title: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } },
+          ],
+        }
+      : {};
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.course.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          _count: {
+            select: { enrolledUsers: true },
           },
         },
-      },
-    });
-  }
+      }),
+      this.prisma.course.count({ where }),
+    ]);
 
-  async enrollUser(courseId: number, userId: number): Promise<User> {
-    const course = await this.prisma.course.findUnique({
-      where: { id: courseId },
-    });
-
-    if (!course) {
-      throw new NotFoundException('Course not found');
-    }
-
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        enrolledCourses: {
-          connect: { id: courseId },
-        },
-      },
-      include: {
-        _count: {
-          select: { enrolledCourses: true },
-        },
-      },
-    });
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findOne(id: number) {

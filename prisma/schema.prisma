@@ -25,11 +25,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   enrolledCourses Course[]            @relation("UserEnrolledCourses")
-  applications    CourseApplication[]
 }
 
 model Course {
   id          Int     @id @default(autoincrement())
+  uuid        String  @unique @default(uuid())
   title       String
   slug        String @unique
   description String
@@ -48,19 +48,18 @@ model Course {
   updatedAt DateTime @updatedAt
 
   enrolledUsers User[]              @relation("UserEnrolledCourses")
-  applications  CourseApplication[]
+  leads         Lead[]
 }
 
-model CourseApplication {
-  id       Int     @id @default(autoincrement())
-  userName String
-  phone    String
-  comment  String?
+model Lead {
+  id      String @id @default(uuid())
+  name    String
+  phone   String
+  email   String
+  message String?
+  notes   String?
 
-  status String @default("PENDING")
-
-  userId   Int?
-  user     User?  @relation(fields: [userId], references: [id])
+  status ApplicationStatus @default(NEW)
 
   courseId Int
   course   Course @relation(fields: [courseId], references: [id])

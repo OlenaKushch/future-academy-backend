@@ -2,10 +2,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { UserRole } from '@prisma/client';
 
 interface JwtPayload {
   sub: number;
   email: string;
+  role: UserRole;
 }
 
 @Injectable()
@@ -26,8 +28,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Invalid token payload');
     }
     return {
+      id: payload.sub,
       userId: payload.sub,
       email: payload.email,
+      role: payload.role,
     };
   }
 }
