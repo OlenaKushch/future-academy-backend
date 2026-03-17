@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import slugify from 'slugify';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -307,6 +308,7 @@ async function main() {
   ];
 
   const coursesArray = coursesRaw.map(c => ({
+    uuid: randomUUID(),
     title: c.title,
     slug:
       slugify(c.title, { lower: true, strict: true }) +
