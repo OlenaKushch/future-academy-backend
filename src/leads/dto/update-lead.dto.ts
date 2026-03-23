@@ -4,8 +4,8 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class UpdateLeadDto {
   @ApiProperty({
-    example: 'PENDING',
-    description: 'Application status',
+    example: 'CONTACTED',
+    description: 'Lead status',
     required: false,
     enum: ApplicationStatus,
   })

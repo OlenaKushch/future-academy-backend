@@ -24,7 +24,9 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all courses with pagination and search (Public)' })
+  @ApiOperation({
+    summary: 'Get all courses with pagination and search (Public)',
+  })
   @ApiResponse({
     status: 200,
     description: 'List of courses',

@@ -179,6 +179,26 @@ export class LeadsService {
     });
   }
 
+  async deleteForAdmin(userId: number, id: string) {
+    await this.ensureAdmin(userId);
+
+    const existing = await this.prisma.lead.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Lead not found');
+    }
+
+    await this.prisma.lead.delete({ where: { id } });
+
+    return {
+      status: 'success',
+      message: 'Lead deleted successfully',
+    };
+  }
+
   private async ensureAdmin(userId: number): Promise<void> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },

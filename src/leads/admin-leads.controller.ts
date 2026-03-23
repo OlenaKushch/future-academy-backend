@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -106,5 +107,35 @@ export class AdminLeadsController {
     @Body() dto: UpdateLeadDto,
   ) {
     return this.leadsService.updateForAdmin(user.userId ?? user.id, id, dto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a lead (Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lead deleted successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - User must have ADMIN role',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Lead not found',
+  })
+  async remove(
+    @GetUser() user: ActiveUserData,
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    const result = await this.leadsService.deleteForAdmin(
+      user.userId ?? user.id,
+      id,
+    );
+
+    return result;
   }
 }

@@ -4,8 +4,8 @@ import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class AdminLeadsQueryDto {
   @ApiProperty({
-    example: 'PENDING',
-    description: 'Filter by application status',
+    example: 'CONTACTED',
+    description: 'Filter by lead status',
     required: false,
     enum: ApplicationStatus,
   })
@@ -42,7 +42,7 @@ export class AdminLeadsQueryDto {
 
   @ApiProperty({
     example: 'John Doe',
-    description: 'Search leads by name or email',
+    description: 'Search leads by name, phone, or email',
     required: false,
   })
   @IsOptional()
