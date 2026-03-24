@@ -12,8 +12,10 @@ import {
 import {
   ApiTags,
   ApiOperation,
-  ApiResponse,
   ApiBearerAuth,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { LeadsService } from './leads.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -24,6 +26,16 @@ import type { ActiveUserData } from '../common/decorators/get-user.decorator';
 import { AdminLeadsQueryDto } from './dto/admin-leads-query.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
 import { UserRole } from '@prisma/client';
+import {
+  DeleteLeadResponseDto,
+  LeadResponseDto,
+} from './dto/lead-response.dto';
+import {
+  ApiBadRequestErrorResponse,
+  ApiForbiddenErrorResponse,
+  ApiNotFoundErrorResponse,
+  ApiUnauthorizedErrorResponse,
+} from '../common/swagger/decorators/api-error-responses.decorator';
 
 @ApiTags('admin/leads')
 @ApiBearerAuth()
@@ -35,18 +47,33 @@ export class AdminLeadsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all leads (Admin only)' })
-  @ApiResponse({
-    status: 200,
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: ['NEW', 'CONTACTED', 'IN_PROGRESS', 'CLOSED'],
+  })
+  @ApiQuery({
+    name: 'courseId',
+    required: false,
+    type: String,
+    description: 'Course numeric id or UUID',
+  })
+  @ApiQuery({ name: 'dateFrom', required: false, type: String })
+  @ApiQuery({ name: 'dateTo', required: false, type: String })
+  @ApiQuery({ name: 'search', required: false, type: String })
+  @ApiOkResponse({
     description: 'List of all leads',
+    type: LeadResponseDto,
+    isArray: true,
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - User must have ADMIN role',
-  })
+  @ApiBadRequestErrorResponse('Invalid query parameters', [
+    'dateFrom must be a valid ISO 8601 date string',
+  ])
+  @ApiUnauthorizedErrorResponse('Unauthorized', 'Unauthorized')
+  @ApiForbiddenErrorResponse(
+    'Forbidden - User must have ADMIN role',
+    'Admin access required',
+  )
   async findAll(
     @GetUser() user: ActiveUserData,
     @Query() query: AdminLeadsQueryDto,
@@ -56,22 +83,25 @@ export class AdminLeadsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a single lead by ID (Admin only)' })
-  @ApiResponse({
-    status: 200,
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a4035b26-536c-4fbb-84f2-56df1c472e5d',
+  })
+  @ApiOkResponse({
     description: 'Lead details',
+    type: LeadResponseDto,
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - User must have ADMIN role',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Lead not found',
-  })
+  @ApiBadRequestErrorResponse(
+    'Lead id must be a valid UUID v4',
+    'Validation failed (uuid v4 is expected)',
+  )
+  @ApiUnauthorizedErrorResponse('Unauthorized', 'Unauthorized')
+  @ApiForbiddenErrorResponse(
+    'Forbidden - User must have ADMIN role',
+    'Admin access required',
+  )
+  @ApiNotFoundErrorResponse('Lead not found', 'Lead not found')
   async findOne(
     @GetUser() user: ActiveUserData,
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
@@ -81,26 +111,25 @@ export class AdminLeadsController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a lead (Admin only)' })
-  @ApiResponse({
-    status: 200,
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a4035b26-536c-4fbb-84f2-56df1c472e5d',
+  })
+  @ApiOkResponse({
     description: 'Lead updated successfully',
+    type: LeadResponseDto,
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid input data',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - User must have ADMIN role',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Lead not found',
-  })
+  @ApiBadRequestErrorResponse(
+    'Invalid input data',
+    'At least one field must be provided',
+  )
+  @ApiUnauthorizedErrorResponse('Unauthorized', 'Unauthorized')
+  @ApiForbiddenErrorResponse(
+    'Forbidden - User must have ADMIN role',
+    'Admin access required',
+  )
+  @ApiNotFoundErrorResponse('Lead not found', 'Lead not found')
   async update(
     @GetUser() user: ActiveUserData,
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
@@ -111,22 +140,21 @@ export class AdminLeadsController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a lead (Admin only)' })
-  @ApiResponse({
-    status: 200,
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a4035b26-536c-4fbb-84f2-56df1c472e5d',
+  })
+  @ApiOkResponse({
     description: 'Lead deleted successfully',
+    type: DeleteLeadResponseDto,
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - User must have ADMIN role',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Lead not found',
-  })
+  @ApiUnauthorizedErrorResponse('Unauthorized', 'Unauthorized')
+  @ApiForbiddenErrorResponse(
+    'Forbidden - User must have ADMIN role',
+    'Admin access required',
+  )
+  @ApiNotFoundErrorResponse('Lead not found', 'Lead not found')
   async remove(
     @GetUser() user: ActiveUserData,
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,

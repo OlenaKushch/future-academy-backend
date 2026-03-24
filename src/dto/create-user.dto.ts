@@ -13,10 +13,9 @@ export class CreateUserDto {
   @ApiProperty({
     example: 'user@example.com',
     description: 'Email address',
-    required: false,
   })
   @IsEmail()
-  email?: string;
+  email: string;
 
   @ApiProperty({
     example: 'SecurePassword123',
@@ -36,8 +35,8 @@ export class CreateUserDto {
   name: string;
 
   @ApiProperty({
-    example: 'USER',
-    description: 'User role (USER or ADMIN)',
+    example: UserRole.MANAGER,
+    description: 'User role (MANAGER or ADMIN)',
     required: false,
     enum: UserRole,
   })

@@ -35,13 +35,32 @@ async function bootstrap() {
   // 4. Swagger (Документація)
   const config = new DocumentBuilder()
     .setTitle('Future Academy API')
-    .setDescription('Документація API занять')
+    .setDescription(
+      'REST API for Future Academy: authentication, users, courses, public leads, and admin lead management.',
+    )
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        description: 'Paste access token received from POST /api/v1/auth/login',
+      },
+      'bearer',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    customSiteTitle: 'Future Academy API Docs',
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      docExpansion: 'list',
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
 
   // 5. Запуск сервера
   const port = process.env.PORT || 3000;

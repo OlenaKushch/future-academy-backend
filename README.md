@@ -69,12 +69,17 @@ npm run start:dev
 
 | Метод | Шлях | Опис | Доступ |
 | --- | --- | --- | --- |
-| `POST` | `/auth/register` | Реєстрація нового юзера | Public |
-| `POST` | `/auth/login` | Отримання JWT токена | Public |
-| `GET` | `/courses` | Список усіх курсів | Public |
-| `GET` | `/courses/:id` | Деталі курсу + статус запису | Private |
-| `POST` | `/courses/:id/enroll` | Записатися на курс | Private |
-| `GET` | `/users/profile/courses` | Курси, на які підписаний юзер | Private |
+| `POST` | `/api/v1/auth/login` | Отримання JWT токена | Public |
+| `GET` | `/api/v1/courses` | Список усіх курсів | Public |
+| `GET` | `/api/v1/courses/:id` | Деталі курсу | Public |
+| `POST` | `/api/v1/leads` | Створення заявки на курс | Public |
+| `GET` | `/api/v1/admin/leads` | Список заявок | Admin |
+| `GET` | `/api/v1/admin/leads/:id` | Деталі заявки | Admin |
+| `PATCH` | `/api/v1/admin/leads/:id` | Оновлення статусу/нотаток заявки | Admin |
+| `DELETE` | `/api/v1/admin/leads/:id` | Видалення заявки | Admin |
+| `GET` | `/api/v1/users` | Список користувачів | Private |
+| `POST` | `/api/v1/users` | Створення користувача | Private |
+| `GET` | `/api/v1/users/profile` | Профіль поточного користувача | Private |
 
 ---
 

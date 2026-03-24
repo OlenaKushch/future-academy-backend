@@ -1,7 +1,14 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LeadsService } from './leads.service';
 import { CreateLeadDto } from '../dto/create-lead.dto';
+import { CreateLeadResponseDto } from './dto/lead-response.dto';
+import { ApiBadRequestErrorResponse } from '../common/swagger/decorators/api-error-responses.decorator';
 
 @ApiTags('leads')
 @Controller('api/v1/leads')
@@ -10,14 +17,15 @@ export class LeadsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new lead (Public)' })
-  @ApiResponse({
-    status: 201,
+  @ApiBody({ type: CreateLeadDto })
+  @ApiCreatedResponse({
     description: 'Lead created successfully',
+    type: CreateLeadResponseDto,
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid input data',
-  })
+  @ApiBadRequestErrorResponse('Invalid input data or course not found', [
+    'Phone must match UA format +380XXXXXXXXX',
+    'courseId must be a valid UUID',
+  ])
   async create(@Body() dto: CreateLeadDto) {
     return this.leadsService.create(dto);
   }

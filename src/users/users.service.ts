@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
@@ -11,11 +10,9 @@ import { CreateUserDto } from '../dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly logger = new Logger(UsersService.name);
-
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -35,18 +32,17 @@ export class UsersService {
         password: hashedPassword,
         role: dto.role ?? UserRole.MANAGER,
       },
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        name: true,
+        avatar: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
-    //   } catch (error) {
-    //     this.logger.error('Error creating user', error);
-    //     if (
-    //       error instanceof Prisma.PrismaClientKnownRequestError &&
-    //       error.code === 'P2002'
-    //     ) {
-    //       throw new ConflictException('User with this email already exists');
-    //     }
-
-    //     throw new InternalServerErrorException();
-    //   }
   }
 
   findByEmail(email: string): Promise<User | null> {
