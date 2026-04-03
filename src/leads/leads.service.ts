@@ -223,6 +223,12 @@ export class LeadsService {
     const pass = this.configService.get<string>('SMTP_PASS');
     const from = this.configService.get<string>('SMTP_FROM') ?? user;
     const adminEmail = this.configService.get<string>('ADMIN_EMAIL');
+    const connectionTimeout = Number(
+      this.configService.get<string>('SMTP_CONNECTION_TIMEOUT') ?? 10000,
+    );
+    const socketTimeout = Number(
+      this.configService.get<string>('SMTP_SOCKET_TIMEOUT') ?? 30000,
+    );
 
     if (!host || !user || !pass || !from || !adminEmail) {
       this.logger.warn(
@@ -236,6 +242,8 @@ export class LeadsService {
       port,
       secure: port === 465,
       auth: { user, pass },
+      connectionTimeout,
+      socketTimeout,
     });
 
     try {
