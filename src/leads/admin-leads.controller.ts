@@ -36,6 +36,7 @@ import {
   ApiNotFoundErrorResponse,
   ApiUnauthorizedErrorResponse,
 } from '../common/swagger/decorators/api-error-responses.decorator';
+import { SuccessMessage } from '../common/decorators/success-message.decorator';
 
 @ApiTags('admin/leads')
 @ApiBearerAuth()
@@ -46,6 +47,7 @@ export class AdminLeadsController {
   constructor(private readonly leadsService: LeadsService) {}
 
   @Get()
+  @SuccessMessage('Leads retrieved successfully')
   @ApiOperation({ summary: 'Get all leads (Admin only)' })
   @ApiQuery({
     name: 'status',
@@ -82,6 +84,7 @@ export class AdminLeadsController {
   }
 
   @Get(':id')
+  @SuccessMessage('Lead retrieved successfully')
   @ApiOperation({ summary: 'Get a single lead by ID (Admin only)' })
   @ApiParam({
     name: 'id',
@@ -110,6 +113,7 @@ export class AdminLeadsController {
   }
 
   @Patch(':id')
+  @SuccessMessage('Lead updated successfully')
   @ApiOperation({ summary: 'Update a lead (Admin only)' })
   @ApiParam({
     name: 'id',
@@ -139,6 +143,7 @@ export class AdminLeadsController {
   }
 
   @Delete(':id')
+  @SuccessMessage('Lead deleted successfully')
   @ApiOperation({ summary: 'Delete a lead (Admin only)' })
   @ApiParam({
     name: 'id',

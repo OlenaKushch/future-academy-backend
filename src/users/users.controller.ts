@@ -23,6 +23,7 @@ import {
   ApiNotFoundErrorResponse,
   ApiUnauthorizedErrorResponse,
 } from '../common/swagger/decorators/api-error-responses.decorator';
+import { SuccessMessage } from '../common/decorators/success-message.decorator';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -32,6 +33,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
+  @SuccessMessage('Users retrieved successfully')
   @ApiOperation({ summary: 'Get all users' })
   @ApiOkResponse({
     description: 'List of all users',
@@ -45,6 +47,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @SuccessMessage('User created successfully')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   @ApiCreatedResponse({
@@ -66,6 +69,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @SuccessMessage('User profile retrieved successfully')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiOkResponse({
     description: 'User profile retrieved successfully',
