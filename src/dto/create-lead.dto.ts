@@ -15,7 +15,7 @@ export class CreateLeadDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Name is required' })
-  name: string;
+  name!: string;
 
   @ApiProperty({
     example: '+380123456789',
@@ -25,21 +25,21 @@ export class CreateLeadDto {
   @Matches(/^\+380\d{9}$/, {
     message: 'Phone must match UA format +380XXXXXXXXX',
   })
-  phone: string;
+  phone!: string;
 
   @ApiProperty({
     example: 'john@example.com',
     description: 'Email address',
   })
   @IsEmail({}, { message: 'Invalid email format' })
-  email: string;
+  email!: string;
 
   @ApiProperty({
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     description: 'UUID of the course',
   })
   @IsUUID('4', { message: 'courseId must be a valid UUID' })
-  courseId: string;
+  courseId!: string;
 
   @ApiProperty({
     example: 'Interested in this course',

@@ -15,7 +15,7 @@ export class CreateUserDto {
     description: 'Email address',
   })
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiProperty({
     example: 'SecurePassword123',
@@ -24,7 +24,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 
   @ApiProperty({
     example: 'John Doe',
@@ -32,7 +32,7 @@ export class CreateUserDto {
   })
   @IsString()
   @MinLength(2)
-  name: string;
+  name!: string;
 
   @ApiProperty({
     example: UserRole.MANAGER,
