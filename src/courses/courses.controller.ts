@@ -12,6 +12,7 @@ import {
   ApiBadRequestErrorResponse,
   ApiNotFoundErrorResponse,
 } from '../common/swagger/decorators/api-error-responses.decorator';
+import { SuccessMessage } from '../common/decorators/success-message.decorator';
 
 @ApiTags('courses')
 @Controller('api/v1/courses')
@@ -19,6 +20,7 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get()
+  @SuccessMessage('Courses retrieved successfully')
   @ApiOperation({
     summary: 'Get all courses with pagination and search (Public)',
   })
@@ -104,6 +106,7 @@ export class CoursesController {
   }
 
   @Get(':id')
+  @SuccessMessage('Course retrieved successfully')
   @ApiOperation({ summary: 'Get a single course by ID (Public)' })
   @ApiParam({ name: 'id', type: Number, example: 1 })
   @ApiOkResponse({

@@ -8,6 +8,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { LoginDto } from '../dto/login.dto';
+import { SuccessMessage } from '../common/decorators/success-message.decorator';
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -16,6 +17,7 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @SuccessMessage('Login successful')
   @ApiOperation({ summary: 'User login' })
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({
